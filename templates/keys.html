@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Mailed - Инструкции по созданию ключей</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{{ url_for('static', filename = 'img/bot_avatar.jpg') }}" alt="Аватар бота" class="bot-avatar">
+            <div>
+                <h1>E-Mailed</h1>
+                <p>Ваш почтовый помощник в Telegram</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="instructions">
+        <h2>Инструкции для создания ключей</h2>
+        <div class="features">
+            <div class="feature" onclick="window.open('https://support.google.com/accounts/answer/185833', '_blank');">
+                <img src="https://imgur.com/87ahRSl.jpg" alt="Google Mail" class="service-icon">
+                <h3>Google Mail</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://yandex.com/support/id/authorization/app-passwords.html', '_blank');">
+                <img src="https://imgur.com/gpDYTe6.jpg" alt="Yandex Mail" class="service-icon">
+                <h3>Yandex Mail</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://account.mail.ru/user/2-step-auth/passwords', '_blank');">
+                <img src="https://imgur.com/vpN0D0P.jpg" alt="Mail.ru" class="service-icon">
+                <h3>Mail.ru</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://help.yahoo.com/kb/generate-manage-3rd-party-passwords-sln15241.html', '_blank');">
+                <img src="https://imgur.com/qhsSK8P.jpg" alt="Yahoo" class="service-icon">
+                <h3>Yahoo</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://support.microsoft.com/en-us/account-billing/using-app-passwords-with-apps-that-don-t-support-two-step-verification-5896ed9b-4263-e681-128a-a6f2979a7944', '_blank');">
+                <img src="https://imgur.com/A3U6cYO.jpg" alt="Outlook" class="service-icon">
+                <h3>Outlook</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://proton.me/support/imap-smtp-bridge', '_blank');">
+                <img src="https://imgur.com/nYEBSoy.jpg" alt="Proton Mail" class="service-icon">
+                <h3>Proton Mail</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://support.apple.com/en-us/HT204397', '_blank');">
+                <img src="https://imgur.com/CTYocgN.jpg" alt="iCloud Mail" class="service-icon">
+                <h3>iCloud Mail</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://www.zoho.com/mail/help/adminconsole/email-forwarding.html#alink4', '_blank');">
+                <img src="https://imgur.com/GSuMXzZ.jpg" alt="Zoho Mail" class="service-icon">
+                <h3>Zoho Mail</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://help.aol.com/articles/Create-and-manage-app-password', '_blank');">
+                <img src="https://imgur.com/PzXYqJr.jpg" alt="AOL Mail" class="service-icon">
+                <h3>AOL Mail</h3>
+            </div>
+            <div class="feature" onclick="window.open('https://support.gmx.com/pop-imap/troubleshooting/2fa.html', '_blank');">
+                <img src="https://imgur.com/5Ztnroa.jpg" alt="GMX Mail" class="service-icon">
+                <h3>GMX Mail</h3>
+            </div>
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename = 'js/script.js') }}"></script>
+</body>
+</html>

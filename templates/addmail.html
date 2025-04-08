@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/login.css') }}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>E-Mailed</title>
+	<script>
+		function send_data(){
+		    var log = document.querySelector('#login').value;
+		    var pass = document.querySelector('#pass').value;
+		    var imap = document.querySelector('#imap').value;
+		    if (log.length != 0 && pass.length != 0 && imap.length != 0) window.Telegram.WebApp.sendData(`!AUTH${log} ${pass} ${imap}`);
+		    else window.Telegram.WebApp.showAlert('Не все поля заполнены!');
+		}
+		function imap_servers(s){
+		    const SERVERS = {'yandex.ru': 'imap.yandex.com', 'mail.ru': 'imap.mail.ru', 'gmail.com': 'imap.gmail.com', 'inbox.ru': 'imap.mail.ru', 'rambler.ru': 'imap.rambler.ru', 'yahoo.com': 'imap.mail.yahoo.com'};	
+		    try{
+			var serv = s.split('@')[1];
+			return SERVERS[serv];
+		    } catch(err){
+			return 'bad string';
+		    }
+		}
+		window.onload = function(){
+			window.Telegram.WebApp.headerColor = "#331A00";window.Telegram.WebApp.backgroundColor = "#331A00";window.Telegram.WebApp.MainButton.isVisible = true;window.Telegram.WebApp.MainButton.color = "#331A00";
+			window.Telegram.WebApp.MainButton.text = 'Добавить почту';
+			window.Telegram.WebApp.MainButton.isVisible = true;
+			window.Telegram.WebApp.MainButton.onClick(send_data);
+			window.Telegram.WebApp.enableClosingConfirmation();
+			//window.Telegram.WebApp.headerColor = '#00FF00';
+			//window.Telegram.WebApp.MainButton.color = '#00CC66';
+			document.querySelector('#pass').addEventListener('input', function(event) {
+			  window.Telegram.WebApp.MainButton.hasShineEffect = true;
+			});
+			document.querySelector('#hint_key').addEventListener('click', function(event) {
+			  window.Telegram.WebApp.openLink('https://theslothbear-emailed-server-cae5.twc1.net/keys');
+			});
+			document.querySelector('#login').addEventListener('input', function(event) {
+			  var server = imap_servers(document.querySelector('#login').value);
+			  if (typeof server != 'undefined' && server != 'bad string') document.querySelector('#imap').value = server;
+			});
+		}
+		
+    	</script>
+</head>
+<body>
+	<div style="margin-top: 30%">
+		<div class="input_div"><label for="login">Адрес email</label></br>
+	        <input type="email" id="login" name="login" placeholder="email@yandex.ru" required autofocus></div>
+
+	        <div class="input_div"><label for="pass">Ключ</label><a style="margin-left: 5px">(</a><span id="hint_key">что это?</span><a>)</a></br>
+		<input type="password" id="pass" name="pass" placeholder="Не перепутайте с паролем" required autofocus></div>
+
+	        <div class="input_div"><label for="imap">IMAP-сервер</label></br>
+		<input type="text" id="imap" name="imap" placeholder="imap.yandex.com" required autofocus></div>
+	</div>
+</body>
+</html>

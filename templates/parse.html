@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/login.css') }}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>E-Mailed</title>
+	<script>
+    window.onload = function(){
+	window.Telegram.WebApp.headerColor = "#331A00";window.Telegram.WebApp.backgroundColor = "#331A00";window.Telegram.WebApp.MainButton.isVisible = true;window.Telegram.WebApp.MainButton.color = "#331A00";
+	var log = document.querySelector('#login').value;
+        window.Telegram.WebApp.sendData(`!SEND${log}`);
+    }
+  </script>
+</head>
+<body>
+	<h2>Parsing emails...</h2>
+	<input type="hidden" value="{{login}}" id="login"/>
+</body>
+</html>

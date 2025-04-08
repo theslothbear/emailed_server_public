@@ -1,0 +1,26 @@
+input {
+  text-align: center;
+  margin-top: 3px;
+  border-radius: 10px;
+  padding: 8px;
+  width: 80%;
+}
+div {
+  text-align: center;
+}
+.input_div {
+  margin-top: 20px;
+}
+
+body {
+  background-color: #FFF5E6;
+}
+#hint_key {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+input:focus {
+    outline: orange;
+    box-shadow: 0px 0px 6px orange;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/login.css') }}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>E-Mailed</title>
+	<script>
+		function send_data(){
+		    var token = document.querySelector('#token').value;
+		    if (token.length != 0) window.Telegram.WebApp.sendData(`!GIGA${token}`);
+		    else window.Telegram.WebApp.showAlert('Не все поля заполнены!');
+		}
+
+		window.onload = function(){
+			window.Telegram.WebApp.headerColor = "#331A00";window.Telegram.WebApp.backgroundColor = "#331A00";window.Telegram.WebApp.MainButton.isVisible = true;window.Telegram.WebApp.MainButton.color = "#331A00";
+			window.Telegram.WebApp.MainButton.text = 'Изменить токен';
+			window.Telegram.WebApp.MainButton.isVisible = true;
+			window.Telegram.WebApp.MainButton.onClick(send_data);
+			window.Telegram.WebApp.enableClosingConfirmation();
+			//window.Telegram.WebApp.headerColor = '#00FF00';
+			//window.Telegram.WebApp.MainButton.color = '#00CC66';
+			document.querySelector('#token').addEventListener('input', function(event) {
+			  window.Telegram.WebApp.MainButton.hasShineEffect = true;
+			});
+		}
+    	</script>
+</head>
+<body>
+	<div style="margin-top: 30%">
+		<div class="input_div"><label for="token">Токен GigaChat</label></br>
+	        <input type="password" id="token" name="token" placeholder="" required autofocus></div>
+</body>
+</html>

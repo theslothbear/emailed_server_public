@@ -1,0 +1,6 @@
+strip_markdown
+flask
+bs4
+lxml
+gunicorn==23.0.0
+gigachat
