@@ -1,16 +1,16 @@
-from flask import Flask, request, render_template, render_template_string
+from flask import Flask, request, render_template, render_template_string, Response
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def hello():
     return render_template('index.html')
 
-@app.route("/keys")
+@app.route("/keys", methods=['GET'])
 def keys():
     return render_template('keys.html')
 
-@app.route('/mail')
+@app.route('/mail', methods=['GET'])
 def mail():
     try:
         from connector import MailConnector
@@ -23,13 +23,13 @@ def mail():
                 text = html_text
             else:
                 text = plain_text
-            return render_template_string(f'<!DOCTYPE html><html><head><script src="https://telegram.org/js/telegram-web-app.js?56"></script><script>window.Telegram.WebApp.headerColor = "#331A00";window.Telegram.WebApp.backgroundColor = "#FFF5E6";window.Telegram.WebApp.MainButton.isVisible = true;window.Telegram.WebApp.MainButton.color = "#331A00";window.Telegram.WebApp.MainButton.text = "Полноэкранный режим";window.Telegram.WebApp.MainButton.onClick(() => window.Telegram.WebApp.isFullscreen ? window.Telegram.WebApp.exitFullscreen() : window.Telegram.WebApp.requestFullscreen());window.Telegram.WebApp.ready();</script><link rel="stylesheet" type="text/css" href="/static/css/mail.css"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>E-Mailed</title></head><body><div class="email-header"><h1 class="email-subject">✉ {header}</h1><p class="email-sender">👤 <a href="mailto:{sender}">{sender}</a></p></div><div id="mail">{text}</div></body></html>')
+            return render_template_string(f'<!DOCTYPE html><html><head><script src="https://telegram.org/js/telegram-web-app.js?56"></script><script>window.Telegram.WebApp.headerColor = "#331A00";window.Telegram.WebApp.backgroundColor = "#FFF5E6";window.Telegram.WebApp.MainButton.isVisible = true;window.Telegram.WebApp.MainButton.color = "#331A00";window.Telegram.WebApp.MainButton.text = "Полноэкранный режим";window.Telegram.WebApp.MainButton.onClick(() => window.Telegram.WebApp.isFullscreen ? window.Telegram.WebApp.exitFullscreen() : window.Telegram.WebApp.requestFullscreen());window.Telegram.WebApp.ready();</script><link rel="stylesheet" type="text/css" href="/static/css/mail.css"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>E-Mailed</title></head><body><div class="email-header"><h1 class="email-subject">✉ {header}</h1><p class="email-sender">👤 <a href="mailto:{sender}">{sender}</a></p></div><div id="mail">{text}</div><div id="att"></div></body></html>')
         else:
             return f'Неверный логин или пароль: {mail.connect()}'
     except Exception as e:
         return f'Произошла ошибка: {str(e)}'
 
-@app.route('/retell')
+@app.route('/retell', methods=['GET'])
 def retell():
     try:
         from connector import MailConnector
@@ -63,7 +63,7 @@ def retell():
     except Exception as e:
         return f'Произошла ошибка: {str(e)}'
 
-@app.route('/tgcheck_data')
+@app.route('/tgcheck_data', methods=['GET'])
 def check_data():
     data = request.url.split('?')[-1]
     token = ''
@@ -98,17 +98,49 @@ def check_data():
     data = transform_init_data(data)
     return f'{validate(data, token)}'
     
-@app.route('/addmail')
+@app.route('/addmail', methods=['GET'])
 def add_mail():
     return render_template('addmail.html')
 
-@app.route('/parse')
+@app.route('/parse', methods=['GET'])
 def parse():
     login, password, imap, m_id = request.args.get('login'), request.args.get('pass'), request.args.get('imap'), request.args.get('mail_id')
     return render_template('parse.html', login = login)
 
-@app.route('/change_token')
+@app.route('/change_token', methods=['GET'])
 def change_token():
     return render_template('change_token.html')
 
+import io
+import zipfile
+@app.route('/download_attachment', methods=['GET'])
+def download_zip():
+    try:
+        from connector import MailConnector
+        login, password, imap_server, m_id = request.args.get('l'), request.args.get('p'), request.args.get('i'), request.args.get('mid')
+        mail = MailConnector(login, password, imap_server)
+        if mail.connect() == True:
+            mail_text = mail.get_attachments(str(m_id))
+            header, sp = mail_text['header'], mail_text['attachments']
+            
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                for filename, filedata in sp:
+                    
+                    if isinstance(filedata, str):
+                        filedata = filedata.encode('utf-8')
+                    zip_file.writestr(filename, filedata)
+            
+            zip_buffer.seek(0)
+            
+            return Response(
+                zip_buffer.getvalue(),
+                mimetype='application/zip',
+                headers={'Content-Disposition': f'attachment;filename={m_id}.zip'}
+            )
+        else:
+            return f'Неверный логин или пароль: {mail.connect()}'
+    except Exception as e:
+        return f'Произошла ошибка: {str(e)}'
+        
 app.run(host='0.0.0.0',port=1080)
